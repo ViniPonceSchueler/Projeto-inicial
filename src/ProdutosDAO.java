@@ -3,6 +3,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.sql.SQLException;
+import java.util.List;
 
 
 public class ProdutosDAO 
@@ -16,8 +17,7 @@ public class ProdutosDAO
     public int cadastrarProduto (ProdutosDTO produto)
     {                
         conectaDAO conector = new conectaDAO(); 
-        acessoDB = conector.connectDB();
-        //acessoDB = new conectaDAO().connectDB();
+        acessoDB = conector.connectDB();        
         
         if (acessoDB == false)
         {
@@ -41,13 +41,49 @@ public class ProdutosDAO
                 return ex.getErrorCode();
             } 
         }        
-    }
+    }    
     
-    
-    public ArrayList<ProdutosDTO> listarProdutos()
-    {        
-        return listagem;
-    }       
+    public List<ProdutosDTO> listarProdutos()
+    {
+        conectaDAO conector = new conectaDAO(); 
+        acessoDB = conector.connectDB();        
         
+        if (acessoDB == false)
+        {
+            //JOptionPane.showMessageDialog(null,"Erro de conexão");
+            return null;
+        }
+        else
+        {
+            try 
+            {                
+                prep = conector.conn.prepareStatement("SELECT * from produtos");      
+                resultset = prep.executeQuery();
+                
+                List<ProdutosDTO> listaProdutos = new ArrayList<>();
+ 
+                while (resultset.next())    // se encontrou produtos, vamos carregar os dados                
+                { 
+                    ProdutosDTO produto = new ProdutosDTO();
+                    produto.setId(resultset.getInt("id"));
+                    produto.setNome(resultset.getString("nome"));
+                    produto.setValor(resultset.getInt("valor"));
+                    produto.setStatus(resultset.getString("status"));                
+                    
+                    //Adicionando os elementos na lista criada
+                    listaProdutos.add(produto);                      
+                }
+                
+                return listaProdutos;
+                
+            } 
+            catch (SQLException ex) 
+            {
+                System.out.println("Erro ao gravar: " + ex.getMessage());
+                return null;
+            } 
+        }              
+    }
+            
 }
 
