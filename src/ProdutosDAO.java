@@ -84,6 +84,26 @@ public class ProdutosDAO
             } 
         }              
     }
+    
+    public int venderProduto(Integer identificador)
+    {
+        int status;
+        conectaDAO conector = new conectaDAO(); 
+        acessoDB = conector.connectDB();                
+        
+        try 
+        {
+            prep = conector.conn.prepareStatement("UPDATE produtos SET status = 'Vendido' where id = ?");
+            prep.setInt(1,identificador);
+            status = prep.executeUpdate();
+            return status; //retornar 1
+        } 
+        catch (SQLException ex) 
+        {
+            System.out.println(ex.getErrorCode());
+            return ex.getErrorCode();
+        }
+    }    
             
 }
 
