@@ -1,7 +1,6 @@
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class listagemVIEW extends javax.swing.JFrame {
@@ -122,31 +121,12 @@ public class listagemVIEW extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
-
-        try 
-        {
-            int cod_retorno;
-            String id = id_produto_venda.getText();
+        String id = id_produto_venda.getText();
         
-            ProdutosDAO produtosdao = new ProdutosDAO();
+        ProdutosDAO produtosdao = new ProdutosDAO();
         
-            cod_retorno = produtosdao.venderProduto(Integer.parseInt(id));
-            
-            if (cod_retorno == 1)        
-            {    
-                JOptionPane.showMessageDialog(null, "O status do produto digitado foi atualizado para 'Vendido'");
-                listarProdutos();
-            }  
-            else
-            {    
-                JOptionPane.showMessageDialog(null, "Não foi possível realizar a venda do produto digitado");
-            }                  
-        }
-        catch (Exception e) 
-        {        
-            JOptionPane.showMessageDialog(null, "Não foi possível realizar a conexão com o Banco de Dados.");          
-        }
-        
+        //produtosdao.venderProduto(Integer.parseInt(id));
+        listarProdutos();
     }//GEN-LAST:event_btnVenderActionPerformed
 
     private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed
