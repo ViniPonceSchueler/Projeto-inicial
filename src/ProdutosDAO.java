@@ -85,6 +85,48 @@ public class ProdutosDAO
         }              
     }
     
+    public List<ProdutosDTO> listarProdVendidos()
+    {
+        conectaDAO conector = new conectaDAO(); 
+        acessoDB = conector.connectDB();        
+        
+        if (acessoDB == false)
+        {
+            //JOptionPane.showMessageDialog(null,"Erro de conexão");
+            return null;
+        }
+        else
+        {
+            try 
+            {                
+                prep = conector.conn.prepareStatement("SELECT * FROM produtos WHERE status = 'Vendido'");      
+                resultset = prep.executeQuery();
+                
+                List<ProdutosDTO> listaProdVendidos = new ArrayList<>();
+ 
+                while (resultset.next())    // se encontrou produtos, vamos carregar os dados                
+                { 
+                    ProdutosDTO produto = new ProdutosDTO();
+                    produto.setId(resultset.getInt("id"));
+                    produto.setNome(resultset.getString("nome"));
+                    produto.setValor(resultset.getInt("valor"));
+                    produto.setStatus(resultset.getString("status"));                
+                    
+                    //Adicionando os elementos na lista criada
+                    listaProdVendidos.add(produto);                      
+                }
+                
+                return listaProdVendidos;
+                
+            } 
+            catch (SQLException ex) 
+            {
+                System.out.println("Erro ao gravar: " + ex.getMessage());
+                return null;
+            } 
+        }              
+    }    
+    
     public int venderProduto(Integer identificador)
     {
         int status;
